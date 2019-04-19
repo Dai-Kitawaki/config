@@ -1,8 +1,9 @@
 ## GW以降手順書
 -----------------
-確認  
-モジュールを挿す
+1- 確認  
+2- モジュールを挿す  
 
+-----------------
 
 [test-fw101 / 10.1.1.1 ](https://github.com/Dai-Kitawaki/config/edit/master/md-test/readme.md)  
 ### 設定変更
