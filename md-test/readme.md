@@ -3,3 +3,15 @@
 確認  
 モジュールを挿す
 
+############################################  
+hostname  / 10.1.1.1  
+[login](https://github.com/Dai-Kitawaki/config/edit/master/md-test/readme.md)  
+############################################
+```rb
+conf t
+!
+int vlan3030
+ ip add 192.168.1.1
+ no shut
+exit
+```
