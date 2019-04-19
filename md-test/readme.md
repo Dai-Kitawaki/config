@@ -3,10 +3,8 @@
 確認  
 モジュールを挿す
 
-#-----------------------  
-test-fw101 / 10.1.1.1  
-[login](https://github.com/Dai-Kitawaki/config/edit/master/md-test/readme.md)  
-#-----------------------  
+
+[test-fw101 / 10.1.1.1 ](https://github.com/Dai-Kitawaki/config/edit/master/md-test/readme.md)  
 ```rb
 conf t
 !
