@@ -3,13 +3,13 @@
 ### 概要
 ●Spine (DC1) のGWアドレスを Spine (DC6) へ移設  
 
-1. 事前作業 DC6 NicoSphere に GW切替用の設定を投入  
+1. 【事前作業】 DC6 NicoSphere に GW切替用の設定を投入  
 ※IFはUPさせないので注意
 
-1. DC1 SpineのGW設定を消す（回線断）  
+1. 【メンテ当日】DC1 SpineのGW設定を消す（回線断）  
 ※HSRPの不要な切り替わりを防ぐ為 2号機から作業  
 
-1. DC6 SpineのIFを有効にする
+1. 【メンテ当日】DC6 SpineのIFを有効にする
 
 
 ●[移行対象GWはこちらのスプシ参照](https://docs.google.com/spreadsheets/d/1LgBvj4jF2TfUQs83C-Mwqk5li0YbN5ZpntfgOybc03g/edit#gid=1296365040)  
@@ -47,6 +47,29 @@ interface Vlanif3101
  shutdown
  ip address 10.26.1.254/24 255.255.255.0
  ospf enable 2 area 0.2.0.3
+#
+quit
+dis con cha
+commit
+#
+quit
+# OSPF database #
+display ospf lsdb
+"事前に取得したDBと比較（変化がないこと）"
+
+# SVI status （作成したSVIがUPしていないこと）#
+dis int brief | in 3101
+
+# 疎通確認 (DC1 のGWより応答ある想定)
+ping -c 2 10.26.1.254
+
+# ARP #
+display arp | in 10.26.1.254
+--------------------------------------------------------
+#
+# 問題なければ残りのVlanにも設定を投入
+#
+sys
 #
 interface Vlanif3102
  shutdown
@@ -1031,7 +1054,7 @@ rollback configuration last 1
 ```      
 ------------------------
 
-### 2-1 DC1 SpineのGWの設定を消す（回線断） 
+### 2-1 【メンテ当日】DC1 SpineのGWの設定を消す（回線断） 
 ### [21K1033-3FJ17-NX9272-02 / 10.102.5.2 ](https://docs.google.com/spreadsheets/d/1TvojSd9qo_HbC_H88KLRNzfZqlq6YCt90lfRstQcqvk/edit#gid=1167760439&range=I625)  
 #### 事前確認
 ```rb
@@ -1581,6 +1604,7 @@ interface Vlan3709
  shut
 interface Vlan3710
  shut
+end
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! 戻し考慮して IF　削除は後日実施
@@ -1915,7 +1939,7 @@ sho ip route local | in 3710
 ```
 ------------------------
 
-### 2-2 DC1 SpineのGWの設定を消す（回線断）
+### 2-2 【メンテ当日】DC1 SpineのGWの設定を消す（回線断）
 ### [21K1032-3FJ17-NX9272-01 / 10.102.5.1 ](https://docs.google.com/spreadsheets/d/1TvojSd9qo_HbC_H88KLRNzfZqlq6YCt90lfRstQcqvk/edit#gid=1167760439&range=I624)  
 #### 事前確認
 ```rb
@@ -2465,6 +2489,7 @@ interface Vlan3709
  shut
 interface Vlan3710
  shut
+end
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! 戻し考慮して IF　削除は後日実施
@@ -2809,7 +2834,7 @@ rollback running-config checkpoint stable
 ```      
 ---
 ------------------------
-### 3. DC6 Spineの Vlan IFを有効にする
+### 3. 【メンテ当日】DC6 Spineの Vlan IFを有効にする
 ### [22K2039-K2D022-CE8850 / 10.81.0.13 ](https://docs.google.com/spreadsheets/d/1b3y44zG8fqMLKzecoCpmpUxvp5d1A0eVsMhXfsREq8A/edit#gid=1167760439&range=D21)  
 #### 事前確認
 ```rb
